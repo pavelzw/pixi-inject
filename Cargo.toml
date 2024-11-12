@@ -1,0 +1,48 @@
+[package]
+name = "pixi-inject"
+description = "Inject conda packages into an already existing conda prefix"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["native-tls"]
+native-tls = [
+  "reqwest/native-tls",
+  "reqwest/native-tls-alpn",
+  "rattler/native-tls",
+  "rattler_networking/rustls-tls",
+  "rattler_package_streaming/rustls-tls",
+]
+rustls-tls = [
+  "reqwest/rustls-tls",
+  "reqwest/rustls-tls-native-roots",
+  "rattler/rustls-tls",
+  "rattler_networking/rustls-tls",
+  "rattler_package_streaming/rustls-tls",
+]
+
+[dependencies]
+tokio = { version = "1.41.0", features = ["rt-multi-thread"] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = [
+  "default",
+  "env-filter",
+] }
+tracing-log = "0.2.0"
+anyhow = "1.*"
+clap = { version = "4.5.20", features = ["derive", "string"] }
+clap-verbosity-flag = "2.2.2"
+futures = "0.3.31"
+indicatif = "0.17.8"
+rattler = { version = "0.28.0", default-features = false }
+rattler_digest = "1.0.3"
+rattler_conda_types = "0.29.0"
+rattler_index = "0.19.34"
+rattler_lock = "0.22.29"
+rattler_networking = { version = "0.21.5", default-features = false }
+rattler_package_streaming = { version = "0.22.11", default-features = false }
+rattler_shell = "0.22.5"
+reqwest = { version = "0.12.9", default-features = false, features = [
+  "http2",
+  "macos-system-configuration",
+] }
