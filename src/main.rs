@@ -4,7 +4,7 @@ use clap::Parser;
 use clap_verbosity_flag::Verbosity;
 
 use anyhow::Result;
-use rattler_conda_types::{package::ArchiveType, PackageRecord, PrefixRecord};
+use rattler_conda_types::{package::ArchiveType, PackageRecord, Platform, PrefixRecord};
 use rattler_index::{package_record_from_conda, package_record_from_tar_bz2};
 use tracing_log::AsTrace;
 
@@ -60,7 +60,10 @@ async fn main() -> Result<()> {
 
     let mut package_records = Vec::new();
 
-    tracing::info!("Retrieving metadata of {} injected packages.", injected_packages.len());
+    tracing::info!(
+        "Retrieving metadata of {} injected packages.",
+        injected_packages.len()
+    );
     for (path, archive_type) in injected_packages.iter() {
         let package_record = match archive_type {
             ArchiveType::TarBz2 => package_record_from_tar_bz2(path),
@@ -69,8 +72,30 @@ async fn main() -> Result<()> {
         package_records.push(package_record);
     }
 
+    let not_matching_platform = package_records
+        .iter()
+        .filter(|p| {
+            p.subdir != Platform::NoArch.to_string() && p.subdir != Platform::current().to_string()
+        })
+        .collect::<Vec<_>>();
+
+    if !not_matching_platform.is_empty() {
+        return Err(anyhow::anyhow!(
+            "Packages with platform not matching the current platform ({}) were found: {}",
+            Platform::current().to_string(),
+            not_matching_platform
+                .into_iter()
+                .map(|p| format!("{} ({})", p, p.subdir.clone()))
+                .collect::<Vec<_>>()
+                .join(", ")
+        ));
+    }
+
     tracing::debug!("Validating package compatibility with prefix.");
-    let all_records = prefix_package_records.iter().chain(package_records.iter()).collect();
+    let all_records = prefix_package_records
+        .iter()
+        .chain(package_records.iter())
+        .collect();
     PackageRecord::validate(all_records)?;
     tracing::debug!("All packages are compatible with the prefix.");
 

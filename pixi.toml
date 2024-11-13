@@ -9,6 +9,8 @@ test = "cargo test"
 
 [dependencies]
 rust = "1.81.0"
+openssl = "*"
+pkg-config = "*"
 
 [target.linux.dependencies]
 compilers = ">=1.7.0"
