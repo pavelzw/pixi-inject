@@ -11,14 +11,14 @@ struct Options {
 }
 
 #[fixture]
-fn options(#[default("simple-example")] project: String) -> Options {
+fn options(#[default("simple-example")] test_case: String) -> Options {
     let output_dir = tempdir().unwrap();
 
     // copy pixi.toml and pixi.lock to temporary location
     let pixi_toml = output_dir.path().join("pixi.toml");
     let pixi_lock = output_dir.path().join("pixi.lock");
-    std::fs::copy(format!("tests/resources/{}/pixi.toml", project), &pixi_toml).unwrap();
-    std::fs::copy(format!("tests/resources/{}/pixi.lock", project), &pixi_lock).unwrap();
+    std::fs::copy(format!("tests/resources/{}/pixi.toml", test_case), &pixi_toml).unwrap();
+    std::fs::copy(format!("tests/resources/{}/pixi.lock", test_case), &pixi_lock).unwrap();
 
     let pixi_install = Command::new("pixi")
         .arg("install")
@@ -97,8 +97,8 @@ async fn test_install_twice(options: Options) {
 #[case("already-installed".to_string())]
 #[tokio::test]
 async fn test_already_installed(
-    #[case] _project: String,
-    #[with(_project.clone())] options: Options,
+    #[case] _test_case: String,
+    #[with(_test_case.clone())] options: Options,
 ) {
     let result = pixi_inject::pixi_inject(options.prefix.clone(), options.package).await;
     assert!(result.is_err());
