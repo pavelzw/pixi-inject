@@ -67,6 +67,9 @@ fn required_fs_objects() -> Vec<&'static str> {
     };
 
     vec![
+        #[cfg(not(unix))]
+        "Lib\\site-packages\\pydantic_core",
+        #[cfg(unix)]
         "lib/python3.13/site-packages/pydantic_core",
         pydantic_core_conda_meta,
     ]
