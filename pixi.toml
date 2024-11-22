@@ -8,17 +8,12 @@ build = "cargo build --release"
 test = "cargo test"
 
 [dependencies]
-rust = "1.81.0"
+rust = "1.82.0"
 openssl = "*"
 pkg-config = "*"
 
 [target.linux.dependencies]
 compilers = ">=1.7.0"
-
-[feature.test.dependencies]
-conda = "*"
-micromamba = "*"
-pixi = "*"
 
 [feature.lint.dependencies]
 pre-commit = "*"
@@ -31,5 +26,5 @@ pre-commit-install = "pre-commit install"
 pre-commit-run = "pre-commit run -a"
 
 [environments]
-default = ["lint", "test"]
+default = ["lint"]
 lint = { features = ["lint"], no-default-feature = true }
