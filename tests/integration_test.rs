@@ -17,8 +17,8 @@ fn options(#[default("simple-example")] project: String) -> Options {
     // copy pixi.toml and pixi.lock to temporary location
     let pixi_toml = output_dir.path().join("pixi.toml");
     let pixi_lock = output_dir.path().join("pixi.lock");
-    std::fs::copy(format!("examples/{}/pixi.toml", project), &pixi_toml).unwrap();
-    std::fs::copy(format!("examples/{}/pixi.lock", project), &pixi_lock).unwrap();
+    std::fs::copy(format!("tests/resources/{}/pixi.toml", project), &pixi_toml).unwrap();
+    std::fs::copy(format!("tests/resources/{}/pixi.lock", project), &pixi_lock).unwrap();
 
     let pixi_install = Command::new("pixi")
         .arg("install")
@@ -38,7 +38,7 @@ fn options(#[default("simple-example")] project: String) -> Options {
         Platform::Win64 => "win-64-pydantic-core-2.26.0-py313hf3b5b86_0.conda",
         _ => panic!("Unsupported platform"),
     };
-    let package = PathBuf::from(format!("examples/packages/{}", package));
+    let package = PathBuf::from(format!("tests/resources/packages/{}", package));
     assert!(package.exists());
     Options {
         prefix,
