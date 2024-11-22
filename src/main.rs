@@ -47,7 +47,7 @@ async fn main() -> Result<()> {
             return Err(anyhow::anyhow!(
                 "Both --prefix and --environment cannot be provided at the same time."
             ));
-        },
+        }
         (Some(prefix), None) => prefix,
         (None, Some(environment)) => PathBuf::from(format!(".pixi/envs/{}", environment)),
         (None, None) => PathBuf::from(".pixi/envs/default"),
