@@ -17,8 +17,16 @@ fn options(#[default("simple-example")] test_case: String) -> Options {
     // copy pixi.toml and pixi.lock to temporary location
     let pixi_toml = output_dir.path().join("pixi.toml");
     let pixi_lock = output_dir.path().join("pixi.lock");
-    std::fs::copy(format!("tests/resources/{}/pixi.toml", test_case), &pixi_toml).unwrap();
-    std::fs::copy(format!("tests/resources/{}/pixi.lock", test_case), &pixi_lock).unwrap();
+    std::fs::copy(
+        format!("tests/resources/{}/pixi.toml", test_case),
+        &pixi_toml,
+    )
+    .unwrap();
+    std::fs::copy(
+        format!("tests/resources/{}/pixi.lock", test_case),
+        &pixi_lock,
+    )
+    .unwrap();
 
     let pixi_install = Command::new("pixi")
         .arg("install")

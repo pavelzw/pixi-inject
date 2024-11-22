@@ -166,7 +166,7 @@ fn package_record_from_archive(file: &Path) -> Result<PackageRecord> {
 
 /// Install a package into the environment and write a `conda-meta` file that
 /// contains information about how the file was linked.
-pub async fn install_package_to_environment_from_archive(
+async fn install_package_to_environment_from_archive(
     target_prefix: &Path,
     package_path: PathBuf,
     repodata_record: RepoDataRecord,
@@ -221,7 +221,7 @@ pub async fn install_package_to_environment_from_archive(
 }
 
 // https://github.com/conda/rattler/pull/937
-pub async fn link_package_from_archive(
+async fn link_package_from_archive(
     package_path: &Path,
     target_dir: &Path,
     driver: &InstallDriver,
