@@ -6,8 +6,8 @@ use tempfile::tempdir;
 
 struct Options {
     prefix: PathBuf,
-    _output_dir: tempfile::TempDir,
     package: Vec<PathBuf>,
+    _output_dir: tempfile::TempDir,
 }
 
 #[fixture]
@@ -42,8 +42,8 @@ fn options(#[default("simple-example")] project: String) -> Options {
     assert!(package.exists());
     Options {
         prefix,
+        package: vec![package],
         _output_dir: output_dir,
-        package: vec![package.into()],
     }
 }
 
@@ -97,7 +97,8 @@ async fn test_install_twice(options: Options) {
 #[case("already-installed".to_string())]
 #[tokio::test]
 async fn test_already_installed(
-    #[case] _project: String, #[with(_project.clone())] options: Options,
+    #[case] _project: String,
+    #[with(_project.clone())] options: Options,
 ) {
     let result = pixi_inject::pixi_inject(options.prefix.clone(), options.package).await;
     assert!(result.is_err());
