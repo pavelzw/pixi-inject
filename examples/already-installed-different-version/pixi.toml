@@ -1,8 +1,9 @@
 [project]
 channels = ["conda-forge"]
-name = "simple-example"
+name = "already-installed"
 platforms = ["osx-arm64", "osx-64", "linux-64", "win-64"]
 
 [dependencies]
 python = "3.13.*"
 typing-extensions = "*"
+pydantic-core = "2.27.0"
