@@ -13,8 +13,6 @@ struct Options {
 #[fixture]
 fn options(#[default("simple-example")] project: String) -> Options {
     let output_dir = tempdir().unwrap();
-    eprintln!("Output dir: {:?}", output_dir.path());
-    let _ = output_dir.path().to_path_buf();
 
     // copy pixi.toml and pixi.lock to temporary location
     let pixi_toml = output_dir.path().join("pixi.toml");
@@ -95,21 +93,11 @@ async fn test_install_twice(options: Options) {
 }
 
 #[rstest]
+#[case("already-installed-different-version".to_string())]
+#[case("already-installed".to_string())]
 #[tokio::test]
-async fn test_already_installed(#[with("already-installed".to_string())] options: Options) {
-    let result = pixi_inject::pixi_inject(options.prefix.clone(), options.package).await;
-    assert!(result.is_err());
-    assert!(result
-        .err()
-        .unwrap()
-        .to_string()
-        .contains("Some of the packages are already installed: pydantic-core"))
-}
-
-#[rstest]
-#[tokio::test]
-async fn test_already_installed_different_version(
-    #[with("already-installed-different-version".to_string())] options: Options,
+async fn test_already_installed(
+    #[case] _project: String, #[with(_project.clone())] options: Options,
 ) {
     let result = pixi_inject::pixi_inject(options.prefix.clone(), options.package).await;
     assert!(result.is_err());
