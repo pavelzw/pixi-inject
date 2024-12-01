@@ -23,15 +23,15 @@ rustls-tls = [
 
 [dependencies]
 tokio = { version = "1.41.0", features = ["rt-multi-thread"] }
-tracing = "0.1.40"
-tracing-subscriber = { version = "0.3.18", features = [
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = [
   "default",
   "env-filter",
 ] }
 tracing-log = "0.2.0"
 anyhow = "1.*"
 clap = { version = "4.5.20", features = ["derive", "string"] }
-clap-verbosity-flag = "2.2.2"
+clap-verbosity-flag = "3.0.1"
 futures = "0.3.31"
 indicatif = "0.17.8"
 rattler = { version = "0.28.0", default-features = false }
