@@ -77,6 +77,25 @@ fn required_fs_objects() -> Vec<&'static str> {
 
 #[rstest]
 #[tokio::test]
+async fn test_noarch_python(options: Options) {
+    pixi_inject::pixi_inject(
+        options.prefix.clone(),
+        vec!["tests/resources/packages/setuptools-75.6.0-pyhff2d567_1.conda".into()],
+    )
+    .await
+    .unwrap();
+
+    let required_fs_objects = vec![
+        "lib/python3.13/site-packages/setuptools/__init__.py",
+        "lib/python3.13/site-packages/pkg_resources/__init__.py",
+    ];
+    for fs_object in required_fs_objects {
+        assert!(options.prefix.join(fs_object).exists());
+    }
+}
+
+#[rstest]
+#[tokio::test]
 async fn test_simple_example(options: Options, required_fs_objects: Vec<&'static str>) {
     pixi_inject::pixi_inject(options.prefix.clone(), options.package)
         .await
