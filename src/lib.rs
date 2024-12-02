@@ -1,5 +1,5 @@
 use anyhow::Result;
-use rattler::install::{link_package, InstallDriver, InstallOptions};
+use rattler::install::{link_package, InstallDriver, InstallOptions, PythonInfo};
 use rattler_conda_types::{prefix_record::PathsEntry, PackageRecord, PrefixRecord, RepoDataRecord};
 use rattler_package_streaming::fs::extract;
 use std::{
@@ -123,7 +123,24 @@ pub async fn pixi_inject(target_prefix: PathBuf, packages: Vec<PathBuf>) -> Resu
     );
 
     let driver = InstallDriver::default();
-    let options = InstallOptions::default();
+    let python_info = if installed_package_names.contains("python") {
+        Some(PythonInfo::from_python_record(
+            &installed_packages
+                .iter()
+                .find(|&p| p.repodata_record.package_record.name.as_normalized() == "python")
+                .context("Could not find python package in installed packages")?
+                .repodata_record
+                .package_record
+                .clone(),
+            Platform::current(),
+        )?)
+    } else {
+        None
+    };
+    let options = InstallOptions {
+        python_info,
+        ..Default::default()
+    };
 
     for (path, package_record) in injected_packages.iter() {
         let repodata_record = RepoDataRecord {
