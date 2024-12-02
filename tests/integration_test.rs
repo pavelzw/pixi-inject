@@ -85,6 +85,12 @@ async fn test_noarch_python(options: Options) {
     .await
     .unwrap();
 
+    #[cfg(not(unix))]
+    let required_fs_objects = vec![
+        "Lib\\site-packages\\setuptools\\__init__.py",
+        "Lib\\site-packages\\pkg_resources\\__init__.py",
+    ];
+    #[cfg(unix)]
     let required_fs_objects = vec![
         "lib/python3.13/site-packages/setuptools/__init__.py",
         "lib/python3.13/site-packages/pkg_resources/__init__.py",
