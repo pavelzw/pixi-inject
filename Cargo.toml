@@ -22,14 +22,14 @@ rustls-tls = [
 ]
 
 [dependencies]
-tokio = { version = "1.43.0", features = ["rt-multi-thread"] }
+tokio = { version = "1.44.1", features = ["rt-multi-thread"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = [
   "default",
   "env-filter",
 ] }
 anyhow = "1.*"
-clap = { version = "4.5.31", features = ["derive", "string"] }
+clap = { version = "4.5.35", features = ["derive", "string"] }
 clap-verbosity-flag = { version = "3.0.2", features = ["tracing"] }
 futures = "0.3.31"
 indicatif = "0.17.11"
@@ -41,11 +41,11 @@ rattler_lock = "0.22.29"
 rattler_networking = { version = "0.21.8", default-features = false }
 rattler_package_streaming = { version = "0.22.11", default-features = false }
 rattler_shell = "0.22.5"
-reqwest = { version = "0.12.12", default-features = false, features = [
+reqwest = { version = "0.12.15", default-features = false, features = [
   "http2",
   "macos-system-configuration",
 ] }
-tempfile = "3.17.1"
+tempfile = "3.19.1"
 
 [dev-dependencies]
-rstest = "0.24.0"
+rstest = "0.25.0"
