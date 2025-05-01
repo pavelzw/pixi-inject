@@ -22,14 +22,14 @@ rustls-tls = [
 ]
 
 [dependencies]
-tokio = { version = "1.44.1", features = ["rt-multi-thread"] }
+tokio = { version = "1.44.2", features = ["rt-multi-thread"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = [
   "default",
   "env-filter",
 ] }
 anyhow = "1.*"
-clap = { version = "4.5.35", features = ["derive", "string"] }
+clap = { version = "4.5.37", features = ["derive", "string"] }
 clap-verbosity-flag = { version = "3.0.2", features = ["tracing"] }
 futures = "0.3.31"
 indicatif = "0.17.11"
