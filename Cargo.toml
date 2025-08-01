@@ -22,30 +22,30 @@ rustls-tls = [
 ]
 
 [dependencies]
-tokio = { version = "1.44.2", features = ["rt-multi-thread"] }
+tokio = { version = "1.47.1", features = ["rt-multi-thread"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = [
   "default",
   "env-filter",
 ] }
 anyhow = "1.*"
-clap = { version = "4.5.37", features = ["derive", "string"] }
-clap-verbosity-flag = { version = "3.0.2", features = ["tracing"] }
+clap = { version = "4.5.42", features = ["derive", "string"] }
+clap-verbosity-flag = { version = "3.0.3", features = ["tracing"] }
 futures = "0.3.31"
 indicatif = "0.17.11"
 rattler = { version = "0.28.0", default-features = false }
 rattler_digest = "1.0.4"
-rattler_conda_types = "0.29.0"
+rattler_conda_types = "0.29.5"
 rattler_index = "0.19.34"
-rattler_lock = "0.22.29"
+rattler_lock = "0.22.34"
 rattler_networking = { version = "0.21.8", default-features = false }
-rattler_package_streaming = { version = "0.22.11", default-features = false }
-rattler_shell = "0.22.5"
-reqwest = { version = "0.12.15", default-features = false, features = [
+rattler_package_streaming = { version = "0.22.18", default-features = false }
+rattler_shell = "0.22.10"
+reqwest = { version = "0.12.22", default-features = false, features = [
   "http2",
   "macos-system-configuration",
 ] }
-tempfile = "3.19.1"
+tempfile = "3.20.0"
 
 [dev-dependencies]
-rstest = "0.25.0"
+rstest = "0.26.1"
