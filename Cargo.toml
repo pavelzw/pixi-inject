@@ -24,7 +24,7 @@ rustls-tls = [
 [dependencies]
 tokio = { version = "1.44.2", features = ["rt-multi-thread"] }
 tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = [
+tracing-subscriber = { version = "0.3.20", features = [
   "default",
   "env-filter",
 ] }
