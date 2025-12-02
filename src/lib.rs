@@ -1,6 +1,8 @@
 use anyhow::Result;
-use rattler::install::{link_package, InstallDriver, InstallOptions, PythonInfo};
-use rattler_conda_types::{prefix_record::PathsEntry, PackageRecord, PrefixRecord, RepoDataRecord};
+use rattler::install::{InstallDriver, InstallOptions, PythonInfo, link_package};
+use rattler_conda_types::{
+    PackageRecord, PrefixRecord, RepoDataRecord, prefix::Prefix, prefix_record::PathsEntry,
+};
 use rattler_package_streaming::fs::extract;
 use std::{
     fmt::{Display, Formatter},
@@ -10,7 +12,7 @@ use std::{
 use std::collections::HashSet;
 
 use anyhow::Context;
-use rattler_conda_types::{package::ArchiveType, Platform};
+use rattler_conda_types::{Platform, package::ArchiveType};
 use rattler_index::{package_record_from_conda, package_record_from_tar_bz2};
 use reqwest::Url;
 
@@ -38,7 +40,7 @@ pub async fn pixi_inject(target_prefix: PathBuf, packages: Vec<PathBuf>) -> Resu
     let installed_packages = PrefixRecord::collect_from_prefix(&target_prefix)?;
     let installed_package_records = installed_packages
         .iter()
-        .map(|e| e.repodata_record.clone().package_record)
+        .map(|e: &PrefixRecord| e.repodata_record.clone().package_record)
         .collect::<Vec<_>>();
 
     let injected_packages = packages
@@ -78,7 +80,7 @@ pub async fn pixi_inject(target_prefix: PathBuf, packages: Vec<PathBuf>) -> Resu
     if !not_matching_platform.is_empty() {
         return Err(anyhow::anyhow!(
             "Packages with platform not matching the current platform ({}) were found: {}",
-            Platform::current().to_string(),
+            Platform::current(),
             not_matching_platform
                 .into_iter()
                 .map(|p| format!("{} ({})", p, p.subdir.clone()))
@@ -151,7 +153,7 @@ pub async fn pixi_inject(target_prefix: PathBuf, packages: Vec<PathBuf>) -> Resu
                 .to_string(),
             url: Url::from_file_path(path.canonicalize()?)
                 .map_err(|_| anyhow::anyhow!("Could not convert path to URL"))?,
-            channel: "".to_string(),
+            channel: Some("".to_string()),
         };
         install_package_to_environment_from_archive(
             target_prefix.as_path(),
@@ -203,15 +205,18 @@ async fn install_package_to_environment_from_archive(
     // Construct a PrefixRecord for the package
     let prefix_record = PrefixRecord {
         repodata_record,
-        package_tarball_full_path: None,
-        extracted_package_dir: None,
+        package_tarball_full_path: Default::default(),
+        extracted_package_dir: Default::default(),
         files: paths
             .iter()
             .map(|entry| entry.relative_path.clone())
             .collect(),
         paths_data: paths.into(),
-        requested_spec: None,
-        link: None,
+        #[allow(deprecated)]
+        requested_spec: Default::default(),
+        requested_specs: Default::default(),
+        installed_system_menus: Default::default(),
+        link: Default::default(),
     };
 
     // Create the conda-meta directory if it doesnt exist yet.
@@ -252,7 +257,12 @@ async fn link_package_from_archive(
         temp_dir.path().display()
     );
     extract(package_path, temp_dir.path())?;
-    link_package(temp_dir.path(), target_dir, driver, options)
-        .await
-        .map_err(|e| anyhow::anyhow!("Could not create temporary directory: {}", e))
+    link_package(
+        temp_dir.path(),
+        &Prefix::create(target_dir)?,
+        driver,
+        options,
+    )
+    .await
+    .map_err(|e| anyhow::anyhow!("Could not create temporary directory: {}", e))
 }
