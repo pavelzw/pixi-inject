@@ -1,7 +1,7 @@
 use anyhow::Result;
-use rattler::install::{link_package, InstallDriver, InstallOptions, PythonInfo};
+use rattler::install::{InstallDriver, InstallOptions, PythonInfo, link_package};
 use rattler_conda_types::{
-    prefix::Prefix, prefix_record::PathsEntry, PackageRecord, PrefixRecord, RepoDataRecord,
+    PackageRecord, PrefixRecord, RepoDataRecord, prefix::Prefix, prefix_record::PathsEntry,
 };
 use rattler_package_streaming::fs::extract;
 use std::{
@@ -12,7 +12,7 @@ use std::{
 use std::collections::HashSet;
 
 use anyhow::Context;
-use rattler_conda_types::{package::ArchiveType, Platform};
+use rattler_conda_types::{Platform, package::ArchiveType};
 use rattler_index::{package_record_from_conda, package_record_from_tar_bz2};
 use reqwest::Url;
 
@@ -80,7 +80,7 @@ pub async fn pixi_inject(target_prefix: PathBuf, packages: Vec<PathBuf>) -> Resu
     if !not_matching_platform.is_empty() {
         return Err(anyhow::anyhow!(
             "Packages with platform not matching the current platform ({}) were found: {}",
-            Platform::current().to_string(),
+            Platform::current(),
             not_matching_platform
                 .into_iter()
                 .map(|p| format!("{} ({})", p, p.subdir.clone()))
