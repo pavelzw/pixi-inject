@@ -121,11 +121,13 @@ async fn test_install_twice(options: Options) {
 
     let result = pixi_inject::pixi_inject(options.prefix.clone(), options.package).await;
     assert!(result.is_err());
-    assert!(result
-        .err()
-        .unwrap()
-        .to_string()
-        .contains("Some of the packages are already installed: pydantic-core"))
+    assert!(
+        result
+            .err()
+            .unwrap()
+            .to_string()
+            .contains("Some of the packages are already installed: pydantic-core")
+    )
 }
 
 #[rstest]
@@ -138,9 +140,11 @@ async fn test_already_installed(
 ) {
     let result = pixi_inject::pixi_inject(options.prefix.clone(), options.package).await;
     assert!(result.is_err());
-    assert!(result
-        .err()
-        .unwrap()
-        .to_string()
-        .contains("Some of the packages are already installed: pydantic-core"))
+    assert!(
+        result
+            .err()
+            .unwrap()
+            .to_string()
+            .contains("Some of the packages are already installed: pydantic-core")
+    )
 }
