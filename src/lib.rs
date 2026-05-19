@@ -12,7 +12,10 @@ use std::{
 use std::collections::HashSet;
 
 use anyhow::Context;
-use rattler_conda_types::{Platform, package::ArchiveType};
+use rattler_conda_types::{
+    Platform,
+    package::{CondaArchiveType, DistArchiveIdentifier},
+};
 use rattler_index::{package_record_from_conda, package_record_from_tar_bz2};
 use reqwest::Url;
 
@@ -147,10 +150,12 @@ pub async fn pixi_inject(target_prefix: PathBuf, packages: Vec<PathBuf>) -> Resu
     for (path, package_record) in injected_packages.iter() {
         let repodata_record = RepoDataRecord {
             package_record: package_record.clone(),
-            file_name: path
-                .to_str()
-                .context("Could not create file name from path")?
-                .to_string(),
+            identifier: DistArchiveIdentifier::try_from_path(path).with_context(|| {
+                format!(
+                    "Could not create archive identifier from path: {}",
+                    path.display()
+                )
+            })?,
             url: Url::from_file_path(path.canonicalize()?)
                 .map_err(|_| anyhow::anyhow!("Could not convert path to URL"))?,
             channel: Some("".to_string()),
@@ -173,12 +178,11 @@ pub async fn pixi_inject(target_prefix: PathBuf, packages: Vec<PathBuf>) -> Resu
 }
 
 fn package_record_from_archive(file: &Path) -> Result<PackageRecord> {
-    let archive_type = ArchiveType::split_str(file.to_string_lossy().as_ref())
-        .context("Could not create ArchiveType")?
-        .1;
+    let archive_type =
+        CondaArchiveType::try_from(file).context("Could not determine conda archive type")?;
     match archive_type {
-        ArchiveType::TarBz2 => package_record_from_tar_bz2(file),
-        ArchiveType::Conda => package_record_from_conda(file),
+        CondaArchiveType::TarBz2 => package_record_from_tar_bz2(file),
+        CondaArchiveType::Conda => package_record_from_conda(file),
     }
     .map_err(|e| anyhow::anyhow!("Could not read package record from archive: {}", e))
 }
