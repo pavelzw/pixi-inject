@@ -25,9 +25,6 @@ struct Cli {
 
     #[command(flatten)]
     verbose: Verbosity,
-
-    #[arg(long)]
-    skip_deprecation_error: bool,
 }
 
 /* -------------------------------------------- MAIN ------------------------------------------- */
@@ -35,17 +32,10 @@ struct Cli {
 /// The main entrypoint for the pixi-inject CLI.
 #[tokio::main]
 async fn main() -> Result<()> {
+    eprintln!(
+        "⚠️ This tool is deprecated. Please use `pixi exec rattler inject-into-prefix` instead."
+    );
     let cli = Cli::parse();
-    if cli.skip_deprecation_error {
-        eprintln!(
-            "⚠️ This tool is deprecated. Please use `pixi exec rattler inject-into-prefix` instead."
-        );
-    } else {
-        eprintln!(
-            "❌ This tool is deprecated. Please use `pixi exec rattler inject-into-prefix` instead. To get rid of this error, use `--skip-deprecation-error`."
-        );
-        exit(1)
-    }
 
     tracing_subscriber::FmtSubscriber::builder()
         .with_max_level(cli.verbose)
