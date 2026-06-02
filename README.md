@@ -22,6 +22,9 @@
 
 # pixi-inject
 
+> [!ERROR]
+> This tool is deprecated. Please use `pixi exec rattler inject-into-prefix` instead.
+
 This is a simple executable that injects a conda package into an existing pixi environment.
 
 ```bash

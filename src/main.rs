@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, process::exit};
 
 use clap::Parser;
 use clap_verbosity_flag::Verbosity;
@@ -25,6 +25,9 @@ struct Cli {
 
     #[command(flatten)]
     verbose: Verbosity,
+
+    #[arg(long)]
+    skip_deprecation_error: bool,
 }
 
 /* -------------------------------------------- MAIN ------------------------------------------- */
@@ -33,6 +36,16 @@ struct Cli {
 #[tokio::main]
 async fn main() -> Result<()> {
     let cli = Cli::parse();
+    if cli.skip_deprecation_error {
+        eprintln!(
+            "⚠️ This tool is deprecated. Please use `pixi exec rattler inject-into-prefix` instead."
+        );
+    } else {
+        eprintln!(
+            "❌ This tool is deprecated. Please use `pixi exec rattler inject-into-prefix` instead. To get rid of this error, use `--skip-deprecation-error`."
+        );
+        exit(1)
+    }
 
     tracing_subscriber::FmtSubscriber::builder()
         .with_max_level(cli.verbose)
