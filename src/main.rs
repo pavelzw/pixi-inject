@@ -1,4 +1,4 @@
-use std::{path::PathBuf, process::exit};
+use std::path::PathBuf;
 
 use clap::Parser;
 use clap_verbosity_flag::Verbosity;
