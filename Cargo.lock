@@ -2837,17 +2837,17 @@ dependencies = [
 
 [[package]]
 name = "native-tls"
-version = "0.2.12"
+version = "0.2.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a8614eb2c83d59d1c8cc974dd3f920198647674a0a035e1af1fa58707e317466"
+checksum = "465500e14ea162429d264d44189adc38b199b62b1c21eea9f69e4b73cb03bbf2"
 dependencies = [
  "libc",
  "log",
  "openssl",
- "openssl-probe",
+ "openssl-probe 0.2.1",
  "openssl-sys",
  "schannel",
- "security-framework 2.11.1",
+ "security-framework 3.7.0",
  "security-framework-sys",
  "tempfile",
 ]
@@ -3123,6 +3123,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 
 [[package]]
+name = "openssl-probe"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7c87def4c32ab89d880effc9e097653c8da5d6ef28e6b539d313baaacfbafcbe"
+
+[[package]]
 name = "openssl-sys"
 version = "0.9.115"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3344,7 +3350,7 @@ dependencies = [
  "rattler_digest",
  "rattler_index",
  "rattler_lock",
- "rattler_networking",
+ "rattler_networking 0.28.0",
  "rattler_package_streaming",
  "rattler_shell",
  "reqwest",
@@ -3700,7 +3706,7 @@ dependencies = [
  "rattler_conda_types",
  "rattler_digest",
  "rattler_menuinst",
- "rattler_networking",
+ "rattler_networking 0.27.2",
  "rattler_package_streaming",
  "rattler_shell",
  "rayon",
@@ -3738,7 +3744,7 @@ dependencies = [
  "parking_lot",
  "rattler_conda_types",
  "rattler_digest",
- "rattler_networking",
+ "rattler_networking 0.27.2",
  "rattler_package_streaming",
  "rattler_redaction",
  "rayon",
@@ -3854,7 +3860,7 @@ dependencies = [
  "rattler_conda_types",
  "rattler_config",
  "rattler_digest",
- "rattler_networking",
+ "rattler_networking 0.27.2",
  "rattler_package_streaming",
  "rattler_s3",
  "reqwest",
@@ -3972,6 +3978,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "rattler_networking"
+version = "0.28.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5cbe3eb2914bd715ca7dde169979bce15a8e3c6f0850a039d3ab67110180f73a"
+dependencies = [
+ "ambient-id",
+ "anyhow",
+ "astral-reqwest-middleware",
+ "async-once-cell",
+ "async-trait",
+ "base64",
+ "fs-err",
+ "getrandom 0.4.2",
+ "http 1.4.0",
+ "itertools 0.14.0",
+ "reqwest",
+ "retry-policies",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tracing",
+ "url",
+]
+
+[[package]]
 name = "rattler_package_streaming"
 version = "0.26.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3994,7 +4026,7 @@ dependencies = [
  "num_cpus",
  "rattler_conda_types",
  "rattler_digest",
- "rattler_networking",
+ "rattler_networking 0.27.2",
  "rattler_redaction",
  "reqwest",
  "serde_json",
@@ -4044,7 +4076,7 @@ dependencies = [
  "aws-sdk-s3",
  "aws-smithy-http-client",
  "clap",
- "rattler_networking",
+ "rattler_networking 0.27.2",
  "thiserror 2.0.18",
  "tracing",
  "url",
@@ -4257,9 +4289,9 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62e0021ea2c22aed41653bc7e1419abb2c97e038ff2c33d0e1309e49a97deec0"
+checksum = "219c5811de6525e5416c7d5d53bb656d3afdbc6c5af816e0802bcfa42dbdc1c3"
 dependencies = [
  "base64",
  "bytes",
@@ -4457,7 +4489,7 @@ version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7fcff2dd52b58a8d98a70243663a0d234c4e2b79235637849d15913394a247d3"
 dependencies = [
- "openssl-probe",
+ "openssl-probe 0.1.5",
  "rustls-pki-types",
  "schannel",
  "security-framework 3.7.0",
@@ -4547,11 +4579,11 @@ dependencies = [
 
 [[package]]
 name = "schannel"
-version = "0.1.27"
+version = "0.1.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f29ebaa345f945cec9fbbc532eb307f0fdad8161f281b6369539c8d84876b3d"
+checksum = "91c1b7e4904c873ef0710c1f407dde2e6287de2bebc1bbbf7d430bb7cbffd939"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
