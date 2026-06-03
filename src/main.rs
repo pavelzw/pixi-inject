@@ -32,6 +32,9 @@ struct Cli {
 /// The main entrypoint for the pixi-inject CLI.
 #[tokio::main]
 async fn main() -> Result<()> {
+    eprintln!(
+        "⚠️ This tool is deprecated. Please use `pixi exec rattler inject-into-prefix` instead."
+    );
     let cli = Cli::parse();
 
     tracing_subscriber::FmtSubscriber::builder()
